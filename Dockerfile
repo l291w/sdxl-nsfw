@@ -2,7 +2,8 @@ FROM runpod/worker-comfyui:5.5.1-base
 
 ARG HF_TOKEN=""
 
-RUN comfy node install --exit-on-fail rgthree-comfy --mode remote
+RUN comfy node install --exit-on-fail rgthree-comfy --mode remote || \
+    git clone https://github.com/rgthree/rgthree-comfyui /root/comfy/ComfyUI/custom_nodes/rgthree-comfy
 RUN comfy node install --exit-on-fail comfyui-glifnodes
 RUN comfy node install --exit-on-fail comfyui-impact-pack
 RUN comfy node install --exit-on-fail comfyui-impact-subpack
