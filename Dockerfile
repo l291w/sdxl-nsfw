@@ -8,7 +8,8 @@ RUN comfy node install --exit-on-fail comfyui-impact-pack
 RUN comfy node install --exit-on-fail comfyui-impact-subpack
 RUN comfy node install --exit-on-fail cg-use-everywhere
 RUN comfy node install --exit-on-fail comfyui_essentials
-RUN comfy node install --exit-on-fail comfyui-nag
+RUN comfy node install --exit-on-fail comfyui-nag || \
+    git clone https://github.com/shiimizu/ComfyUI-NAG /root/comfy/ComfyUI/custom_nodes/ComfyUI-NAG
 
 RUN BACKOFFS="10 20 30 60 90" && for i in 1 2 3 4 5; do HF_TOKEN=$HF_TOKEN comfy model download --url 'https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora.safetensors' --relative-path models/loras --filename 'dmd2_sdxl_4step_lora.safetensors' && break; SLEEP=$(echo $BACKOFFS | cut -d ' ' -f $i) && sleep $SLEEP; done
 RUN BACKOFFS="10 20 30 60 90" && for i in 1 2 3 4 5; do HF_TOKEN=$HF_TOKEN comfy model download --url 'https://huggingface.co/notkenski/upscalers/resolve/main/1xSkinContrast-High-SuperUltraCompact.pth' --relative-path models/upscale_models --filename '1xSkinContrast-High-SuperUltraCompact.pth' && break; SLEEP=$(echo $BACKOFFS | cut -d ' ' -f $i) && sleep $SLEEP; done
